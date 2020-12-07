@@ -7,17 +7,22 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.MyClass;
 
 /**
  *
  * @author George.Pasparakis
  */
-@WebServlet(name = "XYZ", urlPatterns = {"/", "/xyz"})
+@WebServlet(name = "XYZ", urlPatterns = {"/", "/xyz"},  
+            initParams={
+            @WebInitParam(name="hasLogin", value="false")})
 public class XYZ extends HttpServlet {
 
     /**
@@ -56,9 +61,29 @@ public class XYZ extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
+    // /xyz servlet == controller
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        // prepare data to be sent to front end via attributes
+        // the line below is considered as business logic of the servlet or for
+        // the entire web app
+        MyClass myClass = new MyClass("Speedy", 10, 34.67f);
+        // on the request we add a new "variable" == attribute
+        request.setAttribute("classData", myClass);
+        
+        
+        // we use the technique of request.getRequestDispatcher()
+        // in order to move a request from the current servlet onto
+        // a new resource, e.g. html, jsp, servlet
+        // this is considered a View!!!!! (speedy.jsp)
+//        RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/views/speedy.jsp");
+//        rd.forward(request, response);
+
+        
+        response.sendRedirect("WEB-INF/views/speedy.jsp");
+
+
+        //processRequest(request, response);
     }
 
     /**
