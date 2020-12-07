@@ -17,7 +17,7 @@
         <p>local i = <%= i %> (100 or 5?)</p>
         <h1>Hello World!</h1>
         <%! int i = 100; %>
-        <button onclick="<% if(i == 100) out.print("myButtonClick()"); %>">Click Me</button>
+        <button onclick="<% if(this.i == 100) out.print("myButtonClick()"); %>">Click Me</button>
         
         <script>
             function myButtonClick() { alert("KOUKOU");}
